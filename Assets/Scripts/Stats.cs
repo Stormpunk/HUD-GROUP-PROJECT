@@ -36,4 +36,8 @@ public class Stats : MonoBehaviour
     {
         health -= 1;
     }
+    public void HealHealth()
+    {
+        health += 1;
+    }
 }

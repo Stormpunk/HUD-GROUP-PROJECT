@@ -13,11 +13,14 @@ public class Movement : MonoBehaviour
     #endregion
     #region Sprint
     public float sprintSpeed;
+    public bool isSprinting;
+    public float staminaRegenTimer;
     #endregion
     public Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
+        isSprinting = false;
         rb = GetComponent<Rigidbody>();
         speed = 10;
         sprintSpeed = 10;
@@ -27,16 +30,25 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isSprinting = Input.GetKey(KeyCode.LeftShift);
         moveX = Input.GetAxisRaw("Horizontal");
         moveZ = Input.GetAxisRaw("Vertical");
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (isSprinting)
         {
             speed = sprintSpeed;
             rb.gameObject.GetComponent<Stats>().stamina -= (5 * Time.deltaTime);
+            staminaRegenTimer = 3.0f;
         }
         else
         {
             speed = baseSpeed;
+            isSprinting = false;
+        }
+        staminaRegenTimer -= Time.deltaTime;
+        if(staminaRegenTimer <= 0 && (rb.GetComponent<Stats>().stamina != rb.GetComponent<Stats>().maxStamina))
+        {
+            staminaRegenTimer = 0;
+            rb.GetComponent<Stats>().stamina += Time.deltaTime;
         }
     }
     private void FixedUpdate()
