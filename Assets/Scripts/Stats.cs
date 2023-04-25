@@ -27,6 +27,10 @@ public class Stats : MonoBehaviour
         {
             DrainStamina();
         }
+        if(stamina <= 0)
+        {
+            stamina = 0;
+        } 
     }
     public void DrainStamina()
     {
